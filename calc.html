@@ -1,0 +1,115 @@
+﻿<!doctype html> 
+<html class="no-js" lang="">
+<head>
+  <meta charset="utf-8">
+
+  <title></title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+</head>
+
+<body>
+<input type="text" readonly/>
+<table>
+  <tr>
+    <td>
+      <button onclick="com(1)">1</button>
+      <button onclick="com(2)">2</button>
+      <button onclick="com(3)">3</button>
+      <button onclick="exp('+')">+</button>
+    <td/>
+  </tr>
+  <tr>
+    <td>
+      <button onclick="com(4)">4</button>
+      <button onclick="com(5)">5</button>
+      <button onclick="com(6)">6</button>
+      <button onclick="exp('-')">-</button>
+    <td/>
+  </tr>
+  <tr>
+    <td>
+      <button onclick="com(7)">7</button>
+      <button onclick="com(8)">8</button>
+      <button onclick="com(9)">9</button>
+      <button onclick="exp('*')">*</button>
+    <td/>
+  </tr>
+  <tr>
+    <td>
+      <button onclick="equal('=')">=</button>
+      <button onclick="com(0)">0</button>
+      <button onclick="exp('c')">c</button>
+      <button onclick="exp('/')">/</button>
+    <td/>
+  </tr>
+</table>
+<script>
+  var i = 0
+  var array = new Array();
+  var boolean = false;
+  var temp = null;
+
+  function com(num){
+    var tag = document.querySelector("input");
+    if(boolean == true){
+      tag.value = '';
+      boolean = false;
+    }
+    tag.value = tag.value + num;
+
+    console.log(array);
+  }
+
+  function exp(oper) {
+    var tag = document.querySelector("input");
+    if(boolean == true){
+      tag.value = temp;
+      boolean = false;
+    }
+
+    array[i] = tag.value;
+    tag.value = oper;
+    i = i+1;
+    switch (tag.value) {
+      case '+': tag.value = '+'; break;
+      case '-': tag.value = '-'; break;
+      case '/': tag.value = '/'; break;
+      case '*': tag.value = '*'; break;
+    }
+    array[i] = tag.value;
+    i = i+1;
+
+    if(tag.value == 'c'){
+       array = new Array();
+       i=0;
+    }
+
+    tag.value = '';
+    console.log(array);
+  }
+
+  function equal(exp) {
+    var tag = document.querySelector("input");
+    array[i] = tag.value;
+    var result = Number(array[0]);
+    for(var j = 1; j<=(array.length/2)*2;j = j+2){
+      switch (array[j]) {
+        case '+': result = result + Number(array[j+1]); break;
+        case '-': result = result - Number(array[j+1]); break;
+        case '/': result = result / Number(array[j+1]); break;
+        case '*': result = result * Number(array[j+1]); break;
+      }
+      console.log(result);
+    }
+    temp = tag.value;
+    tag.value = result;
+    console.log(array);
+    boolean = true;
+  }
+
+</script>
+</body>
+
+</html>
