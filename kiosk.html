@@ -1,0 +1,91 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+<style>
+  img{
+    width:200px;
+  }
+  table{
+    width:100%;
+    border:1px solid #000;
+  }
+  .cartTd{
+    width:200px;
+    background-color: darkgreen;
+  }
+</style>
+<table>
+  <tr>
+    <td>
+      <ul>
+        <li><img src="Desert.jpg" onclick="addItem('a', 1000)"><br/>A</li>
+        <li><img src="Desert.jpg" onclick="addItem('b', 2000)"><br/>B</li>
+        <li><img src="Desert.jpg" onclick="addItem('c',3000)"><br/>C</li>
+        <li><img src="Desert.jpg" onclick="addItem('d',4000)"><br/>D</li>
+      </ul>
+    </td>
+    <td class ="cartTd">
+      <ul id="total">
+        <h2>0</h2>
+      </ul>
+      <ul id="cart">
+      </ul>
+    </td>
+  </tr>
+</table>
+<script>
+  var items = new Array();
+  var sum = 0;
+
+  function addItem(name, price) {
+
+    var target = checkOverlap(name);
+    sum += price;
+
+    if(target){
+      target.qty += 1;
+    }else{
+      items.push({name:name, price:price, qty:1})
+    }
+    showResult();
+  }
+
+  function showResult() {
+    var itemUL = document.querySelector("#cart");
+    var totalUL = document.querySelector("#total");
+
+    itemUL.innerHTML = "";
+    for(var obj of items){
+      itemUL.innerHTML += "<li onclick=\'deleteItem(\""+ obj.name+"\")\'>" + obj.name + " : " + obj.price + "원 : "+obj.qty + "개</li>";
+    }
+    totalUL.innerHTML = "<h2>" + sum + "</h2>";
+  }
+
+  function deleteItem(name) {
+    for(var obj of items){
+
+      if(obj.qty <= 0){
+        continue;
+      }
+
+     if(obj.name == name){
+       obj.qty -=1;
+       sum -= obj.price;
+     }
+    }
+    showResult();
+  }
+
+  function checkOverlap(name) {
+    for(var obj of items){
+      if(obj.name == name){ return obj }
+    }
+    return null;
+  }
+</script>
+</body>
+</html>
