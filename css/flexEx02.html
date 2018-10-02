@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<style>
+    *{
+        padding:0;
+        margin:0;
+    }
+    .container{
+        width:100%;
+        background-color: #f0f0f0;
+        display:flex;
+        justify-content: center;
+    }
+    .wrapper{
+        width: 80%;
+        min-width: 600px;
+        height: 100vh;
+    }
+
+    .wrapper div{
+        box-sizing: border-box; /*border까지 포함해서 사이즈로 계산*/
+    }
+
+    .header{
+        height:20vh;
+        background-color: cornflowerblue;
+    }
+
+    .pagecenter{
+        height:70vh;
+        display: flex;
+    }
+
+    .footer{
+        height: 10vh;
+        background-color: #ddf1f9 ;
+    }
+
+    .menu{
+        width:25%;
+        background-color: #a0d8ef;
+    }
+    .main{
+        width: 75%;
+        background-color: white;
+    }
+</style>
+<div class="container">
+    <div class="wrapper">
+        <div class="header">
+            Header
+        </div>
+        <div class="pagecenter">
+            <div class="menu">
+                Menu
+            </div>
+            <div class="main">
+                Main
+            </div>
+        </div>
+        <div class="footer">
+            footer
+        </div>
+    </div>
+</div>
+</body>
+</html>

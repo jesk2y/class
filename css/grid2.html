@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<style>
+    *{
+        margin: 0;
+        padding: 0;
+    }
+    .wrapper{
+        color: #444;
+        background-color: #D4DFE6;
+        width:100%;
+        display:grid;
+        grid-template:
+                'header header header header'
+                'menu main main sub'
+                'footer footer footer footer';
+        text-align: center;
+    }
+
+    .wrapper div{
+        box-sizing: border-box;
+        border:1px solid white;
+    }
+
+    .f1{
+        grid-area: header;
+        height:20vh;
+    }
+    .f2{
+        grid-area: menu;
+    }
+
+    .f3{
+        grid-area: main;
+    }
+
+    .f4{
+         grid-area: footer;
+        height:10vh;
+     }
+
+    .f5{
+        grid-area: sub;
+    }
+
+    .f2, .f3, .f5{height:70vh}
+
+    @media only screen and (max-width: 800px) {
+        .wrapper {
+            grid-template:
+                    'header'
+                    'menu'
+                    'main'
+                    'sub'
+                    'footer';
+        }
+
+        .facet{
+
+            background-color: #F0E5DE;
+        }
+
+        .f1{
+            grid-area: header;
+            height:10vh;
+        }
+
+        .f2,.f5{height:10vh}
+        .f3{height:60vh}
+    }
+
+
+</style>
+<div class="container">
+
+    <div class="wrapper">
+
+        <div class="facet f1"><h1>Header</h1></div>
+        <div class="facet f2"><h1>menu</h1></div>
+        <div class="facet f3"><h1>main</h1></div>
+        <div class="facet f4"><h1>footer</h1></div>
+        <div class="facet f5"><h1>sub</h1></div>
+    </div>
+
+
+</div>
+</body>
+</html>
