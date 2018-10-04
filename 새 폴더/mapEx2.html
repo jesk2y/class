@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>지도 생성하기</title>
+
+</head>
+<body>
+<style>
+    *{
+        margin: 0;
+        padding: 0;
+    }
+    .wrapper{
+        width:100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: lightgray;
+        height:100vh;
+    }
+    .container{
+        width:600px;
+        height:90vh;
+        padding:20px;
+        background-color: ghostwhite;
+    }
+</style>
+<!-- 지도를 표시할 div 입니다 -->
+<div class="wrapper">
+    <div class="container">
+        <div id="map" style="width:100%;height:50vh;"></div>
+    </div>
+</div>
+
+<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=0b8ca018eae4b931cf6655a575ea3de6"></script>
+<script>
+    var mapContainer = document.getElementById('map'), // 지도를 표시할 div
+        mapOption = {
+            center: new daum.maps.LatLng(37.570286, 126.986884), // 지도의 중심좌표
+            level: 3 // 지도의 확대 레벨
+        };
+
+    // 지도를 표시할 div와  지도 옵션으로  지도를 생성합니다
+    var map = new daum.maps.Map(mapContainer, mapOption);
+
+    // 마커를 생성합니다
+    var marker = new daum.maps.Marker({
+        position: new daum.maps.LatLng(37.570286, 126.986884),
+        map:map
+    });
+
+</script>
+
+<script>
+    var arr=[
+        {title: "고기팩토리",lat:37.569820, lng:126.986001},
+        {title: "갓덴스시",lat:37.569081, lng:126.985591},
+        {title: "코다차야",lat:37.569949, lng:126.985049},
+        {title: "롯데리아",lat:37.569857, lng:126.984923},
+        {title: "초밥의신부타",lat:37.569440, lng:126.987367},
+        {title: "청진식당",lat:37.570515, lng:126.985710}
+             ];
+
+    for( store of arr){
+        var marker = new daum.maps.Marker({
+            position: new daum.maps.LatLng(store.lat, store.lng),
+            map:map
+        });
+
+        var infowindow = new daum.maps.InfoWindow({
+            content: store.title // 인포윈도우에 표시할 내용
+        });
+
+        daum.maps.event.addListener(marker, 'click', makeOverListener(map, marker, infowindow));
+        daum.maps.event.addListener(marker, 'mouseout', makeOutListener(infowindow,marker));
+    }
+
+    // 인포윈도우를 표시하는 클로저를 만드는 함수입니다
+    function makeOverListener(map, marker, infowindow) {
+        return function() {
+            infowindow.open(map, marker);
+            marker.setMap(null);
+        };
+    }
+
+    // 인포윈도우를 닫는 클로저를 만드는 함수입니다
+    function makeOutListener(infowindow,marker) {
+        return function() {
+            infowindow.close();
+            marker.setMap(null);
+            //이거 두가지면 지도에서 마커가 사라짐
+        };
+    }
+</script>
+</body>
+</html>
