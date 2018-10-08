@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<div id="demo">
+    <h2>AJAX TEAM2 SERVLET</h2>
+    <button type="button" onclick="loadDoc(event)" value="84">조성익</button>
+    <button type="button" onclick="loadDoc(event)" value="94">이호중</button>
+    <button type="button" onclick="loadDoc(event)" value="93"> 정영준</button>
+    <button type="button" onclick="loadDoc(event)" value="83"> 김진솔</button>
+</div>
+
+
+<script>
+
+    function loadDoc(e) {
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function () {
+            if (xhttp.readyState == 4 && xhttp.status == 200) {
+                var text = JSON.parse(xhttp.responseText);
+                console.log(text);
+            }
+        };
+        var value = e.target.value;
+        xhttp.open("GET", "http://10.10.10."+ value + ":8080/jsonEx/quiz", true);
+        xhttp.send();
+    }
+</script>
+</body>
+</html>

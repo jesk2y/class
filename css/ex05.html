@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<style>
+    .wrapper{
+        transform-style: preserve-3d;
+        perspective: 600px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .wrapper img{
+        transition-duration: 1s;
+        width: 400px;
+        cursor: pointer;
+    }
+
+    .move1{
+        animation: m1;
+        animation-duration: 3s;
+    }
+
+    @keyframes m1 {
+        25%{
+            transform: translateX(100px);
+        }
+        50%{
+            transform: rotateX(45deg);
+        }
+        75%{
+            transform: translateY(-100px);
+        }
+    }
+
+</style>
+<div class="wrapper">
+    <img src="sample.jpg">
+</div>
+<script>
+    document.querySelector("body").addEventListener('click',() =>{
+        var className = document.querySelector(".wrapper").setAttribute("class","wrapper move1");
+    },false)
+</script>
+</body>
+</html>
