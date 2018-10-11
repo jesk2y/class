@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<style>
+    .sample{
+        position: absolute;
+        width:100px;
+        height:100px;
+        background-color: darkolivegreen;
+        top:50%;
+        left: 50%;
+        margin: -50px 0 0 -50px;
+        transition-duration: 2s;
+    }
+
+    .big{
+        transform: scale(2) rotateZ(3600deg);
+    }
+</style>
+<button id="showBtn">SHOW</button>
+<button id="hideBtn">HIDE</button>
+<div class="sample"></div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script>
+    $(document).ready(function(){
+        var sample =$(".sample");
+        $.getJSON("http://10.10.10.94:8080/jsonEx/quiz",(result)=>{
+            sample.html(result.name + "<br/>"+result.price).addClass("big");
+        });
+
+    });
+</script>
+</body>
+</html>
