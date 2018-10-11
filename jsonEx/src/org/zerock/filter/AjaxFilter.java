@@ -12,9 +12,9 @@ import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * Servlet Filter implementation class AjaxFilter01
+ * Servlet Filter implementation class AjaxFilter
  */
-@WebFilter("/quiz")
+@WebFilter({"/quiz","/idCheck","/todo/*"})
 public class AjaxFilter implements Filter {
 
     /**
@@ -24,29 +24,34 @@ public class AjaxFilter implements Filter {
         // TODO Auto-generated constructor stub
     }
 
-   /**
-    * @see Filter#destroy()
-    */
-   public void destroy() {
-      // TODO Auto-generated method stub
-   }
+	/**
+	 * @see Filter#destroy()
+	 */
+	public void destroy() {
+		// TODO Auto-generated method stub
+	}
 
-   /**
-    * @see Filter#doFilter(ServletRequest, ServletResponse, FilterChain)
-    */
-   public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-      ((HttpServletResponse) response).addHeader("Access-Control-Allow-Origin", "*");
-        ((HttpServletResponse) response).addHeader("Access-Control-Allow-Methods","GET, OPTIONS, HEAD, PUT, POST");
+	/**
+	 * @see Filter#doFilter(ServletRequest, ServletResponse, FilterChain)
+	 */
+	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
+		
+	  ((HttpServletResponse) response)
+	    .addHeader("Access-Control-Allow-Origin", "*");
+	  
+	  ((HttpServletResponse) response)
+	    .addHeader("Access-Control-Allow-Methods",
+	    		"GET, OPTIONS, HEAD, PUT, POST");
+	 
+		
+		chain.doFilter(request, response);
+	}
 
-      // pass the request along the filter chain
-      chain.doFilter(request, response);
-   }
-
-   /**
-    * @see Filter#init(FilterConfig)
-    */
-   public void init(FilterConfig fConfig) throws ServletException {
-      // TODO Auto-generated method stub
-   }
+	/**
+	 * @see Filter#init(FilterConfig)
+	 */
+	public void init(FilterConfig fConfig) throws ServletException {
+		// TODO Auto-generated method stub
+	}
 
 }

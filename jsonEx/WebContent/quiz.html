@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<div id="demo">
+    <h2>Let AJAX change this text</h2>
+    <button type="button" onclick="loadDoc()">Change Content</button>
+</div>
+
+<script>
+    function loadDoc() {
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function() {
+
+            console.log(xhttp.readyState);
+
+            if (this.readyState == 4 && this.status == 200) {
+                //document.getElementById("demo").innerHTML = this.responseText;
+                //var xmlDoc = this.responseXML;
+
+                //console.log(xmlDoc.querySelector("#b1"));
+
+                var text = JSON.parse(this.responseText);
+                console.log(text);
+
+            }
+        };
+        xhttp.open("GET", "http://localhost:8080/jsonEx/quiz", true);
+        xhttp.send();
+    }
+</script>
+
+</body>
+</html>
