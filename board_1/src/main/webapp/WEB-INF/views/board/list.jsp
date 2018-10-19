@@ -24,7 +24,6 @@
 							<label>Show 
 							<select id="select" name="dataTables-example_length" aria-controls="dataTables-example" 
 							class="form-control input-sm">
-								<option value="">--</option>
 								<option value="10">10</option>
 								<option value="25">25</option>
 								<option value="50">50</option>
@@ -171,6 +170,8 @@ $(document).ready(function(){
 		var val = $(".input-sm option:selected").val();
 		window.location.href = '/board/list?page=1&display='+val;
 	});
+	
+
 })
 </script>
 </body>
