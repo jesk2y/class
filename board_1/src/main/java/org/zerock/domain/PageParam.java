@@ -17,8 +17,10 @@ public class PageParam {
 	}
 	
 	public int getSkip() {
-		return (this.page - 1) * 10;
-	}
+		return (this.page - 1) * this.display;
+	}	// limit #{skip}, #{display}
+	// 페이지를 가져올 때 맨 위 글을 정해줌
+	// 자동으로 호출됨
 	
 	public void setTotal(int total) {
 		this.total = total;
@@ -37,7 +39,7 @@ public class PageParam {
 	}
 	
 	public String getLink(String path) {
-		return	UriComponentsBuilder.fromPath(path)
+		return UriComponentsBuilder.fromPath(path)
 		.queryParam("bno", this.bno)
 		.queryParam("page", this.page)
 		.toUriString();
@@ -49,7 +51,5 @@ public class PageParam {
 		obj.setPage(7);
 		System.out.println(obj.getLink("redirect:/board/read"));
 	}
-	
-
 	
 }
