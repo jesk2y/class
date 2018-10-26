@@ -25,5 +25,30 @@
 	class="org.springframework.web.multipart.support.StandardServletMultipartResolver">
 	</beans:bean>
 	
+	<beans:bean id="sampleInter" 
+	class="org.zerock.interceptor.SampleInterceptor">
+	</beans:bean>
+	
+	<beans:bean id="loginInter" 
+	class="org.zerock.interceptor.AfterLoginInterceptor">
+	</beans:bean>
+	
+	<beans:bean id="checkInter" 
+	class="org.zerock.interceptor.CheckLoginInterceptor">
+	</beans:bean>
+	
+	<interceptors>
+		<interceptor>
+			<mapping path="/uploadAjax"/> <!-- 필터설정  -->
+			<beans:ref bean="checkInter"/>
+		</interceptor>
+	</interceptors>
+	<interceptors>
+		<interceptor>
+			<mapping path="/login"/> <!-- 필터설정  -->
+			<beans:ref bean="loginInter"/>
+		</interceptor>
+	</interceptors>
+	
 	<context:component-scan base-package="org.zerock.controller" />
 </beans:beans>
