@@ -1,5 +1,9 @@
 package org.zerock.controller;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -35,7 +39,7 @@ public class BoardController {
 	
 	@GetMapping({"/read","/modify"})
 	public void read(@ModelAttribute("pageObj") PageParam param, Model model) {
-		
+		getAttachList(param.getBno());
 		model.addAttribute("board", service.read(param));
 	}
 	
@@ -46,7 +50,8 @@ public class BoardController {
 	
 	@PostMapping("/register")
 	public String registerPost(RedirectAttributes rttr, @Valid BoardVO vo, BindingResult result) {
-	
+		
+		log.info(vo);
 		
 		if(result.hasErrors()) {
 			return "/board/register";
@@ -64,8 +69,12 @@ public class BoardController {
 	}
 	
 	@PostMapping("/update")
-	public String delete(RedirectAttributes rttr, BoardVO vo, PageParam param) {
-		log.info(param.getLink("redirect:/board/read"));
+	public String delete(RedirectAttributes rttr, @Valid BoardVO vo, PageParam param, BindingResult result) {
+		
+		if(result.hasErrors()) {
+			return "/board/update";
+		}
+		
 		rttr.addFlashAttribute("result", service.update(vo)==1?"MODIFY":"FAIL");
 		return param.getLink("redirect:/board/read");
 	}
@@ -73,15 +82,45 @@ public class BoardController {
 	@PostMapping("/delete")
 	public String delete(RedirectAttributes rttr, PageParam param) {
 		
-		rttr.addFlashAttribute("result", service.delete(param)==1?"REMOVE":"FAIL");
+		List<BoardAttachVO> attachList = service.getFileList(param.getBno());
+		int count = service.delete(param);
+		if(count == 1) {
+			log.info(attachList);
+			log.info("deleteFile");
+			deleteFiles(attachList);
+		}
+		
+		rttr.addFlashAttribute("result", count==1?"REMOVE":"FAIL");
 		return param.getLink("redirect:/board/list");
 	}
 	
+	//파일처리
+	
 	@GetMapping(value="/fileList",produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@ResponseBody
-	public void getAttachList(int bno){
-		log.info(service.getFileList(bno));
+	public ResponseEntity<List<BoardAttachVO>> getAttachList(int bno){
 		
+		return new ResponseEntity<>(service.getFileList(bno),HttpStatus.OK);
+	}
+	
+	private void deleteFiles(List<BoardAttachVO> attachList) {
+		
+		if(attachList == null) {return;}
+		
+		attachList.forEach(attach ->{
+			Path file = Paths.get("C:\\upload"+attach.getUploadpath()+"\\"+attach.getUuid()+
+					"_"+attach.getFilename());
+			
+			Path thumbFile = Paths.get("C:\\upload"+attach.getUploadpath()+"\\s_"+attach.getUuid()+
+					"_"+attach.getFilename());
+			try {
+				Files.deleteIfExists(file);
+				Files.deleteIfExists(thumbFile);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+
+		});
 	}
 	
 }

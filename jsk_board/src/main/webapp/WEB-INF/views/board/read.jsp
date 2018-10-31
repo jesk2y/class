@@ -4,17 +4,49 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <jsp:include page="../includes/header.jsp"/>
+<div class="bigPictureWrapper">
+	<div class="bigPicture">
+	</div>
+</div>	
+<style>
+img{
+	width:80%;
+}
+hr{
+margin:1rem 0;
+}
+.bigPictureWrapper{
+	position:absolute;
+	z-index:100;
+	top:0%;
+	width:100%;
+	display:none;
+	justify-content: center;
+	align-items: center;
+	height:100%;
+	background-color:gray;
+	background:rgba(255,255,255,0.5);
+}
 
+.bigPicture{
+	display:flex;
+	justify-content: center;
+	align-items: center;
+}
+</style>
 				<!-- Main -->
+				
 					<div id="main">
 
 						<!-- Post -->
 							<section class="post">
-
 								<header>
 									<h2><c:out value="${board.title }"/></h2>
 									<p><c:out value="${board.writer }"/></p>
 								</header>
+								<div class="imgList">
+								
+								</div>
 									<p><c:out value="${board.content }"/></p>
 									<hr/>
 							<button class="button primary small" id="mord">수정/삭제</button>
@@ -45,9 +77,35 @@ $(document).ready(function(){
 		
 	(function(){
 		$.getJSON("/board/fileList",{bno:bno},function(arr){
-			console.log(arr);
+			var str="";
+			$(arr).each(function(i,obj){
+
+				var viewName=obj.filename.substring(0, obj.filename.lastIndexOf("."));
+				var etx = obj.filename.substring(obj.filename.lastIndexOf(".")+1);
+				var fileCallPath = encodeURIComponent(obj.uploadpath+"/"+obj.uuid+"_"+viewName+"_"+etx);
+				
+				str += "<div class='imgOne' data-uuid='"+obj.uuid
+				+"' data-filename='"+obj.filename+"."+obj.etx+"' data-uploadpath='"+obj.uploadpath+
+				"'><img src='/view?fileName="+fileCallPath+"'></div>";				
+			});
+			$(".imgList").append(str);
 		});
 	})();
+
+
+	$(".imgList").on("click","div img",function(e){
+		var obj = $(this);
+		
+		$(".bigPictureWrapper").css("display","flex").show();
+		$(".bigPicture")
+		.html("<img src='"+obj[0].src+"'>")
+	});
+	
+
+	
+	$(".bigPictureWrapper").on("click",function(e){
+		$(".bigPictureWrapper").hide();
+	});
 	
 	$(".button").on("click",function(){
 		

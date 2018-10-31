@@ -8,7 +8,7 @@ public interface BoardAttachMapper {
 	
 	public int insert(BoardAttachVO vo);
 	
-	public int delete(String uuid);
+	public int delete(int bno);
 	
 	public List<BoardAttachVO> findByBno(int bno);
 

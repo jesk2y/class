@@ -75,7 +75,6 @@ hr{
 						</ul>
 					</div>
 				</div>
-					<input type="hidden" name="uuid" value="454656"/>
 			</form:form>
 		</section>
 	</div>
@@ -104,8 +103,9 @@ $(document).ready(function(){
 		var str="";
 		
 		$(".fileBox .imgBox div").each(function(i, obj){
-			str+="<input type='hidden' name='uuid' value='"+obj.dataset.uuid+"'/>";
-			str+="<input type='hidden' name='fileName' value='"+obj.dataset.filename+"'/>";	
+			str+="<input type='hidden' name='attachList["+i+"].uuid' value='"+$(obj).data("uuid")+"'>";
+			str+="<input type='hidden' name='attachList["+i+"].filename' value='"+$(obj).data("filename")+"'>";	
+			str+="<input type='hidden' name='attachList["+i+"].uploadpath' value='"+$(obj).data("uploadpath")+"'>";	
 		});
 		
 		insertForm.append(str).submit();
@@ -113,14 +113,16 @@ $(document).ready(function(){
 	
 	$(".fileBox").on("click",".delete",function(){
 		
+		var uploadPath = $(this).parent().find('div').attr("data-uploadpath");
 		var uuid = $(this).parent().find('div').attr("data-uuid");
 		var fileName = $(this).parent().find('div').attr("data-filename");
-		var src=uuid + "_" + fileName;
+		var src=uploadPath;
+		var finalName = uuid + "_" + fileName;
 		
 		$.ajax({
 			url:'/imgDelete',
 			type:'post',
-			data:{fileName:src},
+			data:{src:src, finalName:finalName},
 			dataType:'text',
 			success:function(result){
 				$(".inputDiv").html(cloneObj.html());
@@ -164,11 +166,12 @@ $(document).ready(function(){
 				str = "";
 				$(result).each(function(i,obj){
 					
-					var fileCallPath = obj.uuid+"_"+obj.fileName;
+					var fileCallPath = encodeURIComponent(obj.uploadpath+"/s_"+obj.uuid+"_"+obj.filename);
+					console.log(fileCallPath);
 					
 					str += "<div class='imgBox'><div data-uuid='"+obj.uuid
-					+"' data-filename='"+obj.fileName+"."+obj.etx+"' class='delete'>x</div><img src='/view/s_"
-					+fileCallPath+"_"+obj.etx+"'></div>";
+					+"' data-filename='"+obj.filename+"."+obj.etx+"' data-uploadpath='"+obj.uploadpath+
+					"' class='delete'>x</div><img src='/view?fileName="+fileCallPath+"_"+obj.etx+"'></div>";
 					
 				});				
 				

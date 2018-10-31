@@ -1,5 +1,6 @@
 package org.zerock.domain;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -25,5 +26,7 @@ public class BoardVO {
 	private String writer;
 	private int bno, reply;
 	private Date regdate, updatedate;
+	
+	private List<BoardAttachVO> attachList;
 	
 }

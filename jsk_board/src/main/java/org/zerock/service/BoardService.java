@@ -21,7 +21,9 @@ public interface BoardService {
 	
 	public int delete(PageParam param);
 	
-	public int insertFile(BoardAttachVO vo);
+	//파일처리
+	
+	public int fileDelete(int bno);
 	
 	public List<BoardAttachVO> getFileList(int bno);
 	

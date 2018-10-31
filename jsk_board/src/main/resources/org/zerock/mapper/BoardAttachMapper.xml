@@ -9,7 +9,7 @@
 </insert>
 
 <delete id="delete">
-	delete from tbl_file where uuid = #{uuid}
+	delete from tbl_file where bno = #{bno}
 </delete>
 
 <select id="findByBno" resultType="org.zerock.domain.BoardAttachVO">

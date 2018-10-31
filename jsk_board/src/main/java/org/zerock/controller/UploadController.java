@@ -4,7 +4,9 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -32,12 +34,24 @@ public class UploadController {
 	
 	private BoardService service;
 	
+	private String getFolder() {
+		SimpleDateFormat sdf = new SimpleDateFormat("yyy-MM-dd");
+		
+		Date date = new Date();
+		
+		String str = sdf.format(date);
+		
+		return str.replace("-", File.separator);
+	};
+	
+	
 	@PostMapping(value="/imgDelete")
 	@ResponseBody
-	public ResponseEntity<String> deleteFile(String fileName){
-		
-		File file = new File("C:\\upload\\"+fileName);
-		File thumbFile = new File("C:\\upload\\s_"+fileName);
+	public ResponseEntity<String> deleteFile(String finalName, String src){
+/*		log.info(finalName);
+		log.info(src);*/
+		File file = new File("C:\\upload"+src+"/"+finalName);
+		File thumbFile = new File("C:\\upload"+src+"/s_"+finalName);
 		
 		file.delete();
 		thumbFile.delete();
@@ -45,9 +59,8 @@ public class UploadController {
 		return new ResponseEntity<>("delete",HttpStatus.OK);
 	}
 	
-	@GetMapping(value="/view/{fileName}")
-	public ResponseEntity<byte[]> viewFile(@PathVariable("fileName") String fileName){
-		
+	@GetMapping(value="/view")
+	public ResponseEntity<byte[]> viewFile(String fileName){
 		int index = fileName.lastIndexOf("_");
 		
 		String ext = fileName.substring(index + 1);
@@ -77,7 +90,17 @@ public class UploadController {
 	public List<BoardAttachVO> upload(MultipartFile[] files ){
 		List<BoardAttachVO> result = new ArrayList<>();
 		
+		log.info(files);
+		
 		for(MultipartFile file : files) {
+			//make-folder
+			File uploadPath = new File("c:\\upload", getFolder());
+			
+			if(uploadPath.exists() == false) {
+				uploadPath.mkdirs();
+			}
+			
+			//end-folder
 	
 			UUID uuid = UUID.randomUUID();
 			
@@ -85,10 +108,9 @@ public class UploadController {
 			String saveName = uuid.toString() + "_" + file.getOriginalFilename();
 			String thumbName = "s_" + saveName;
 			
-			File saveFile = new File("C:\\upload\\"+saveName);
-			
+			File saveFile = new File(uploadPath+"\\"+saveName);
 			try {
-				FileOutputStream thumbFile = new FileOutputStream("C:\\upload\\" + thumbName);
+				FileOutputStream thumbFile = new FileOutputStream(uploadPath+"\\"+thumbName);
 				Thumbnailator.createThumbnail(file.getInputStream(), thumbFile, 100, 100);
 				
 				file.transferTo(saveFile);
@@ -102,7 +124,8 @@ public class UploadController {
 			String ext = originName.substring(index + 1);
 			String origin = originName.substring(0, index);
 			
-			result.add(new BoardAttachVO(uuid.toString(), "C:\\upload\\",
+			BoardAttachVO vo = new BoardAttachVO();
+			result.add(new BoardAttachVO(uuid.toString(), uploadPath.toString().substring(9),
 					origin, ext, 0));
 			
 		}

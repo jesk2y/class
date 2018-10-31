@@ -20,6 +20,7 @@
 	</if>
 </sql>
 
+
   <select id="getList" resultType="org.zerock.domain.BoardVO">
     select * from tbl_board 
     where bno > (select max(bno)-10000 from tbl_board) 
@@ -40,7 +41,7 @@
     where bno=#{bno}
   </select>
   
-  <insert id="insert">
+  <insert id="insert" useGeneratedKeys="true" keyProperty="bno">
   	insert into tbl_board(title, writer, content)
   	values(#{title}, #{writer}, #{content})
   </insert>
