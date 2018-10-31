@@ -396,7 +396,8 @@ table.dataTable thead .sorting:after {
   color: inherit;
 }
 .timeline-body > p,
-.timeline-body > ul {
+.timelin
+e-body > ul {
   margin-bottom: 0;
 }
 .timeline-body > p + p {
