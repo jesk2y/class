@@ -23,7 +23,7 @@
 
   <select id="getList" resultType="org.zerock.domain.BoardVO">
     select * from tbl_board 
-    where bno > (select max(bno)-10000 from tbl_board) 
+    where bno > (select max(bno)-100000 from tbl_board) 
     and del = "n"
     <include refid="search"></include>
     order by bno desc
@@ -32,7 +32,7 @@
   
   <select id="total" resultType="int">
     select count(*) from tbl_board 
-    where bno > (select max(bno)-10000 from tbl_board)
+    where bno > (select max(bno)-100000 from tbl_board)
     <include refid="search"></include>
   </select>
   
@@ -41,7 +41,7 @@
     where bno=#{bno}
   </select>
   
-  <insert id="insert" useGeneratedKeys="true" keyProperty="bno">
+  <insert id="insert">
   	insert into tbl_board(title, writer, content)
   	values(#{title}, #{writer}, #{content})
   </insert>
@@ -55,6 +55,14 @@
   <update id="delete">
   	update tbl_board
   	set del = "y"
+  	where bno = #{bno}
+  </update>
+  
+  <update id="updateReply">
+  	update tbl_board
+  	set reply = (select count(rno) from tbl_reply 
+			  	where bno = #{bno} 
+			  	and del = 'n')
   	where bno = #{bno}
   </update>
   
