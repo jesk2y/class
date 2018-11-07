@@ -21,10 +21,8 @@ public class ServletConfig implements WebMvcConfigurer {
 		CommonsMultipartResolver resolver = new CommonsMultipartResolver();
 		resolver.setMaxUploadSize(1024*1024*10);
 		
-		
 		return resolver;
 	}
-	
 	
 
 	@Override
@@ -47,10 +45,6 @@ public class ServletConfig implements WebMvcConfigurer {
 		
 	}
 
-
-	
-	
-	
 }
 
 

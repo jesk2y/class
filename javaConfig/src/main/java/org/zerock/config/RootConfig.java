@@ -14,6 +14,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
@@ -26,9 +28,18 @@ import com.zaxxer.hikari.HikariDataSource;
 @EnableAspectJAutoProxy
 @EnableTransactionManagement
 @EnableScheduling
-@PropertySource("classpath:db.properties")
+@PropertySource(value= {"classpath:team.properties",
+						"classpath:local.properties"})
 public class RootConfig {
 
+
+	@Bean 
+	public static JavaMailSender mailSender(){ 
+		JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
+		mailSender.setHost("smtp.gmail.com"); mailSender.setUsername("rnrmf9793"); 
+		mailSender.setPassword("gksmf5850"); return mailSender; 
+		} 
+	
 	@Autowired
     private Environment environment;
 	
@@ -41,10 +52,10 @@ public class RootConfig {
 	public DataSource dataSource() {
 		
 		HikariConfig config = new HikariConfig();
-		config.setDriverClassName(environment.getProperty("db.driver"));
-		config.setJdbcUrl(environment.getProperty("db.url"));
-		config.setUsername(environment.getProperty("db.username"));
-		config.setPassword(environment.getProperty("db.password"));
+		config.setDriverClassName(environment.getProperty("team.driver"));
+		config.setJdbcUrl(environment.getProperty("team.url"));
+		config.setUsername(environment.getProperty("team.username"));
+		config.setPassword(environment.getProperty("team.password"));
 		
 		HikariDataSource ds = new HikariDataSource(config);
 		return ds;
