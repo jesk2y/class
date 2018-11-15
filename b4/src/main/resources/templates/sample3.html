@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th = "http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<a th:href="@{/sample1}">LINK1</a>
+	<a th:href="@{~/sample1}">LINK2</a>
+	<a href="">LINK3</a>
+	<a href="">LINK4</a>
+	
+	<h2>[[${arr}]]</h2>
+	<ul th:each="member, iterState : ${list}" th:with="target='u02'">
+		<li>
+			<span>[[${iterState.index}]]</span>
+			<span th:text="${iterState.count}"></span>
+		</li>
+		<li th:text="${member.mid == target?'secret':member.mid}"></li>
+		<li th:text="${member.mpw}"></li>
+		<li th:text="${member.mname}"></li>
+		<li th:text="${#dates.format(member.regdate, 'yyyy-MM-dd')}"></li>
+	</ul>
+	<script th:inline="javascript">
+		var result = [[${result}]];
+		// 자동으로 따옴표 붙음("SUCCESS")
+		if(result === 'SUCCESS'){
+			
+		}
+	</script>
+</body>
+</html>
