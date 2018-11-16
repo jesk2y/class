@@ -25,10 +25,19 @@ public class FreeReplyController {
 	private FreeReplyRepository repository;
 	
 	@GetMapping("/{bno}")
-	public ResponseEntity<List<FreeReply>> getList(@PathVariable("bno") FreeBoard board){
+	public ResponseEntity<List<FreeReply>> getList(@PathVariable("bno") Long bno){
 		
-		log.info(board+"");
+		log.info(bno+"");
 		
-		return new ResponseEntity<>(HttpStatus.OK);
+		FreeBoard vo = new FreeBoard();
+		vo.setBno(bno);
+		
+		List<FreeReply> list = repository.getListByReply(vo);
+		
+		list.forEach(reply -> {
+			log.info("" + reply);
+		});
+		
+		return new ResponseEntity<>(list, HttpStatus.OK);
 	}
 }

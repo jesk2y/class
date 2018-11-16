@@ -22,6 +22,7 @@ import lombok.ToString;
 @Entity
 @Getter
 @Setter
+@EqualsAndHashCode(of="bno")
 @ToString(exclude="replies")
 //순서중요
 public class FreeBoard {

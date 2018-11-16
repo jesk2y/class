@@ -9,7 +9,7 @@ import org.zerock.domain.FreeReply;
 
 public interface FreeReplyRepository extends CrudRepository<FreeReply, Long> {
 	
-	@Query("select r from free_reply r where r.board = ?1 order by r.rno asc")
+	@Query("select r from FreeReply r where r.board = ?1 order by r.rno")
 	//파라미터에는 프리보드 타입 들어가야함
 	public List<FreeReply> getListByReply(FreeBoard board);
 }

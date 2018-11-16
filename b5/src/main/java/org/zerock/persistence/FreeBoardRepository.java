@@ -30,4 +30,7 @@ public interface FreeBoardRepository extends CrudRepository<FreeBoard, Long>{
 			+ "where (b.title like %?1% or b.content like %?1% ) and bno > 0"
 			+ "group by b")
 	public Page<Object[]> listByTitleOrContentPage(String keyword, Pageable pageable);
+
+	@Query("select b from FreeBoard b where b.bno =?1")
+	public FreeBoard getRead(Long bno);
 }
