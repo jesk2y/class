@@ -1,0 +1,62 @@
+
+<!DOCTYPE html>
+<html lang="en" xmlns:v-on="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<div id="app">
+    <outer></outer>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/vue"></script>
+<script>
+
+    const listComponent = {
+        template: "<ul v-on:addItem='addList'><li>AAAAA</li></ul>",
+        methods:{
+            addList:function(){console.log("listComponent add LIst")}
+        }
+    }
+
+    const inner = {
+        template: "<div> inner {{title}} <input type='text' id='input'>" +
+            "<button v-on:click='add'>추가</button></div>",
+        props:['title','clickJob'],
+        methods:{
+            "add":function(e){
+                const inputElement = this.$el.querySelector("#input")
+                alert(inputElement.value)
+                this.$emit("addItem", inputElement.value)
+            }
+        }
+    }
+
+    const outer = {
+        template:"<div> <p>OUTER</p><inner :title='title' :clickJob='doJob' v-on:addItem='add'></inner>" +
+            "<listComponent></listComponent></div>",
+        data: function() {  return {
+            title: "Hello World",
+            doJob: function () { alert("AAA") }
+        }}, //데이터의 객체여야함
+        components: {
+            "inner": inner,
+            "listComponent":listComponent
+        },
+        methods:{
+            add:function(newItem){console.log("outer Method " + newItem)}
+        }
+    }
+    new Vue({
+        el:"#app",
+        components: {
+            "outer": outer
+        }
+    })
+
+</script>
+</body>
+</html>

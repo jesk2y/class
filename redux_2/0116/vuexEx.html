@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<div id="app">
+    <button-controller></button-controller>
+    <counter></counter>
+    <counter></counter>
+    <counter></counter>
+    <counter></counter>
+</div>
+
+
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script src="https://unpkg.com/vuex@3.1.0/dist/vuex.js"></script>
+
+<script>
+
+    const store = new Vuex.Store({
+        state: {
+            count: 0
+        },
+        mutations: {
+            increment (state) {
+                state.count++
+            }
+        },
+        actions: {
+            increment (context) {
+                context.commit('increment')
+            }
+        }
+    })
+
+    const buttonController = {
+        template: "<div><button v-on:click='plus'>PLUS</button> <button v-on:click='minus'>MINUS</button> </div>",
+        methods: {
+            "plus": function() {
+                console.log("plus")
+                console.log(this.$store)
+                this.$store.commit("increment") // 동기
+            },
+            "minus": function() {
+                console.log("minus")
+                this.$store.dispatch("increment") // 비동기
+            },
+        }
+
+    }
+
+    const counter = {
+        template: "<div>Counter - {{this.$store.state.count}}</div>"
+    }
+
+    new Vue({
+        el:"#app",
+        store: store,
+        components: {
+            "counter": counter,
+            "button-controller": buttonController
+        }
+    })
+
+
+</script>
+
+</body>
+</html>

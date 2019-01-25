@@ -1,0 +1,23 @@
+<div id="app" xmlns:v-on="http://www.w3.org/1999/xhtml">
+    <input type="text" id="input"><button v-on:click="Add"> ADD</button>
+
+    <ul>
+        <li v-for="str in value">{{str}}</li>
+    </ul>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script>
+    new Vue({
+        el: '#app',
+        data: {
+            value: ['AAA',"BBB","CCC"],
+        },
+        methods: {
+            "Add": function() {
+                const input = this.$el.querySelector("#input")
+                this.value = [...this.value , input.value];
+                input.value = '';
+            }
+        }
+    })
+</script>
