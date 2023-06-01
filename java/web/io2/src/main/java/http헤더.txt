@@ -1,0 +1,4 @@
+out.write(new String(&quot;HTTP/1.1 200 OK\r\n&quot;).getBytes()); 
+out.write(new String(&quot;Cache-Control: private\r\n&quot;).getBytes()); 
+out.write(new String(&quot;Content-Length: &quot;+msg.getBytes().length+&quot;\r\n&quot;).getBytes()); 
+out.write(new String(&quot;Content-Type: text/html; charset=UTF-8\r\n\r\n&quot;).getBytes());
