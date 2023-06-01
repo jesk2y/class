@@ -1,0 +1,109 @@
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{/layout/layout1}">
+
+
+<div class="col-lg-12" layout:fragment="contentHeader">
+	<h1 class="page-header">Tables</h1>
+</div>
+
+
+<div class="col-lg-12" layout:fragment="content">
+	<div class="panel-body">
+		<table width="100%"
+			class="table table-striped table-bordered table-hover"
+			id="dataTables-example">
+			<thead>
+				<tr>
+					<th>BNO</th>
+					<th>TITLE</th>
+					<th>WRITER</th>
+					<th>REPLYCOUNT</th>
+					<th>REGDATE</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr class="odd gradeX" th:each="arr :${result.content}">
+					<th:block th:with="b=${arr[0]}, rcount = ${arr[1]}">
+						<!-- freeboard:Object 0번쨰, 댓글:Object 1번쨰  -->
+						<td th:text="${b.bno}">BNO</td>
+						<td class="goRead"><a th:href="${b.bno}">[[${b.title}]]</a></td>
+						<td th:text="${b.writer}">WRITER</td>
+						<td th:text="${rcount}">RCOUNT</td>
+						<td>[[${arr[0].regdate}]]</td>
+						<!-- 이건 못바꿈(LocalDateType으로 돼있기 때문), 이쁘게 하려면 Timestamp로 해야함 -->
+					</th:block>
+				</tr>
+			</tbody>
+		</table>
+		<ul class="pagination" th:with="current=${result.pageable}">
+
+			<th:block th:with="prev=${current.previousOrFirst()}">
+			
+				 <li class="page-item" th:if="${prev.previousOrFirst().hasPrevious()}">
+			      <a class="page-link" th:href="${prev.pageNumber-1}" aria-label="Previous">
+			        <span aria-hidden="true">&laquo;</span>
+			      </a>
+			    </li>
+			    
+				<li class="page-item" th:if="${prev.hasPrevious()}"><a
+					class="page-link" th:href="${prev.pageNumber}">[[${prev.pageNumber}]]</a></li>
+	
+				<li class="page-item"
+					th:if="${current.hasPrevious() && current.pageNumber >= 1}"><a
+					class="page-link" th:href="${prev.pageNumber + 1}">[[${prev.pageNumber
+					 + 1}]]</a></li>
+
+			</th:block>
+
+			<li class="page-item active"><a class="page-link"
+				th:href="${current.pageNumber + 1}">[[${current.pageNumber +
+					1}]]</a></li>
+
+			<th:block th:with="next=${current.next()}">
+
+				<li class="page-item" th:if="${result.hasNext()}"><a
+					class="page-link" th:href="${next.pageNumber + 1}">[[${next.pageNumber
+						+ 1}]]</a></li>
+
+				<li class="page-item"
+					th:if="${next.pageNumber+1 < result.totalPages}"><a
+					class="page-link" th:href="${next.pageNumber + 2}">[[${next.pageNumber
+						+ 2}]]</a></li>
+						
+				<li class="page-item" th:if="${next.pageNumber+2 < result.totalPages}">
+			      <a class="page-link" th:href="${next.pageNumber + 3}" aria-label="Next">
+			        <span aria-hidden="true">&raquo;</span>
+			      </a>
+			    </li>
+			</th:block>
+
+		</ul>
+
+	</div>
+	<form id="actionForm">
+		<input type="hidden" id="page" name="page" value="1" />
+	</form>
+</div>
+
+
+<th:block layout:fragment="script">
+	<script th:inline="javascript">
+		$(document).ready(function() {
+			var actionForm = $("#actionForm");
+
+			$(".pagination li a").on("click", function(e) {
+				e.preventDefault();
+				$("#page").val($(this).attr("href"));
+				actionForm.submit();
+			})
+			
+			$(".goRead a").on("click",function(e){
+				e.preventDefault();
+				actionForm.append("<input type='hidden' name='bno' value='"+$(this).attr("href")+"'/>")
+				actionForm.submit();
+			});
+
+		});
+	</script>
+</th:block>
