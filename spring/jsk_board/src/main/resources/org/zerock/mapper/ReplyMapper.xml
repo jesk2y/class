@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.zerock.mapper.ReplyMapper">
+	
+	<select id="getRList" resultType="org.zerock.domain.ReplyVO">
+		select * from tbl_reply
+		where bno = #{bno}
+		and rno > 0 
+		and del = "n"
+		order by ord asc
+		limit #{skip}, #{display}
+	</select>
+	
+	<select id="getRCount" resultType="int">
+		select count(*) from tbl_reply
+		where bno = #{bno}
+		and rno > 0 
+		and del = "n"
+	</select>
+	
+	<select id="read" resultType="org.zerock.domain.ReplyVO">
+		select * from tbl_reply
+		where rno = #{rno}
+	</select>
+
+	<insert id="insert" useGeneratedKeys="true" keyProperty="rno">
+		insert into tbl_reply(bno, reply, replyer, ord)
+		values(#{bno}, #{reply}, #{replyer},
+		(select count(rno) from tbl_reply a where bno = #{bno}) + 1)
+	</insert>
+	
+	<insert id="insertRR" useGeneratedKeys="true" keyProperty="rno">
+		insert into tbl_reply(bno, reply, replyer, ord, dep, pno)
+		values(#{bno}, #{reply}, #{replyer} , 
+        (select ord from tbl_reply a where rno = #{pno}) + 
+         (select count(rno) from tbl_reply b where pno = #{pno})+1, 1, #{pno})
+	</insert>
+	
+	<update id="updateOrd">
+		update tbl_reply set ord = ord + 1 
+		where ord > (select ord from (select * from tbl_reply) a where rno = #{pno})
+		and pno != #{pno}
+	</update>
+	
+	<delete id="delete">
+		update tbl_reply
+		set del = "y"
+		where rno = #{rno}
+		or pno = #{rno}
+	</delete>
+	
+	<update id="update">
+		update tbl_reply
+		set reply = #{reply}, updatedate=now()
+		where rno = #{rno}
+	</update>
+	
+</mapper>
