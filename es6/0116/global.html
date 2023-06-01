@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<div id="app">
+    <logo></logo>
+    <sub1></sub1>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script>
+    //전역
+    Vue.component("logo", {
+        template: "<h1>로고</h1>"
+    })
+
+    const sub1= {
+        template: "<h2>서브로고</h2>",
+
+    }
+
+    const app1 = new Vue({
+         el: "#app",
+         components : {
+            "sub1" : sub1
+         }
+    })
+</script>
+</body>
+</html>

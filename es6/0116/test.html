@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:v-on="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<div id="app">
+    <button v-on:click="inc">증가</button>
+    <button v-on:click="dec">감소</button>
+    <p>{{value}}</p>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/vue"></script>
+<script>
+    var app = new Vue({
+        el: '#app',
+        data: { value: 0 },
+        methods:{
+            inc:function(){ this.value += 1},
+            dec:function(){ this.value -= 1}
+        }
+    })
+</script>
+</body>
+</html>

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div id="app">
+    <inner-a></inner-a>
+    <inner-b></inner-b>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/vue"></script>
+<script>
+
+    var eventBus = new Vue();
+
+    var innerA = {
+        template:"<div v-on:click='doA'>innerA</div>",
+        methods:{
+            "doA":function () {
+                eventBus.$emit("triggerEvent","AAAAAAAAAAAAA")
+            }
+        }
+    }
+
+    var innerB = {
+        template:"<div>innerB</div>",
+        created:function(){
+            eventBus.$on("triggerEvent",function(){
+                alert("AAA")
+            })
+        }
+    }
+
+
+    new Vue({
+        el:"#app",
+        components:{
+            "inner-a": innerA,
+            "inner-b": innerB
+        }
+    })
+
+</script>
+</body>
+</html>

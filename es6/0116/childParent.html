@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<div id="app">
+    <outer></outer>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/vue"></script>
+<script>
+
+    const inner = {
+        template: "<div>inner <button v-on:click='doJob'>CLICK</button></div>",
+        methods:{
+            "doJob":function(){
+                this.$emit("outerDoJob","HELLO")
+            }
+        }
+    }
+
+    const outer = {
+        template:"<div>outer<inner v-on:outerDoJob='outerJob'></inner></div>",
+        components:{
+            "inner":inner
+        },
+        methods:{
+            "outerJob":function(e){
+                console.log(e)
+            }
+        }
+    }
+
+   new Vue({
+       el:"#app",
+       components:{
+           "outer":outer
+       }
+   })
+</script>
+</body>
+</html>
