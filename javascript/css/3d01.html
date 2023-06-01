@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<style>
+    .wrapper{
+        transform-style: preserve-3d;
+        perspective: 600px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .wrapper img{
+        transition-duration: 1s;
+        width: 400px;
+        padding:0 20px;
+        cursor: pointer;
+    }
+
+    .wrapper img:hover{
+        transform: rotateX(45deg);
+    }
+
+</style>
+<div class="wrapper">
+    <div class="container">
+        <img src="sample.jpg">
+    </div>
+</div>
+</body>
+</html>

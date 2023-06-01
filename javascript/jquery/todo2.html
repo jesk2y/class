@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div>
+    <input type="text" id="input">
+    <button id="btn">ADD</button>
+</div>
+<div>
+    <ul class="todoUL"></ul>
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="todo.js"></script>
+<script>
+    $(document).ready(function () {
+        var input = $("#input");
+        var btn = $("#btn");
+        var todoUL = $(".todoUL");
+        var currentPK;
+
+        function refresh(){
+            todoList.getAll(function (arr) {
+                var str ='';    //str로 한번에 해주면 성능좋아짐(append로 하면 매번 바꿔줘야함)
+                $(arr).each(function (idx, todo) {
+                    str+="<li data-pk=\""+todo.pk+"\">"+todo.title+"<button style=\"margin-left:30px\">x</button></li>"
+                });
+                todoUL.html(str);
+            });
+        }
+
+        refresh();
+
+        todoUL.on("click","li",function (e) {
+            var liObj = $(e.target);
+            currentPK = liObj.attr("data-pk");
+            var title = e.target.childNodes[0].nodeValue;
+            input.val(title);
+            btn.html("MOD");
+        }); //위임
+
+        todoUL.on("click","li button",function (e) {
+            e.stopPropagation();
+            var liObj = $(this).closest("li");
+            var pkValue = liObj.attr('data-pk');
+            console.log(pkValue);
+            todoList.remove(pkValue, function (result) {
+               alert("삭제되었습니다.");
+               liObj.remove();
+               refresh();
+            });
+        }); //위임
+
+        btn.on("click", function (e) {
+           var label = e.target.innerHTML;
+           if(label === "ADD"){
+               var text = input.val();
+               if(text.length === 0){ return; }
+               todoList.add(text, function(pk){
+                   alert(pk+"번 글로 등록되었습니다.");
+                   refresh();
+                   input.val("");
+               });  //콜백(title:text 넣기 성공했다면 function 수행)
+           }else if(label === "MOD"){
+               var text = input.val();
+               var obj = {pk:currentPK, title:text};
+               todoList.modify(obj, function (result) {
+                   alert("수정되었습니다.");
+                   refresh();
+                   input.val('');
+                   btn.html("ADD")
+               });
+           }
+
+
+        });
+    })
+</script>
+</body>
+</html>

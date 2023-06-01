@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<style>
+    .spinner{
+        position: absolute;
+        display: none;
+    }
+</style>
+<form class="form" action="http://www.naver.com">
+    <img class="spinner" src="spinner.gif"/>
+    <div>id :
+        <input type="text" name="uid">
+        <span class="msg"></span>
+        <button id="checkBtn">중복체크</button>
+    </div>
+    <div>pw :
+        <input type="password" name="upw">
+    </div>
+    <div>mail:
+        <input type="text" name="email">
+    </div>
+    <div>
+        <button>BUTTON</button>
+    </div>
+</form>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script>
+    $(document).ready(function () {
+
+        $("form").submit(function(e){
+            e.preventDefault();
+            console.log("button clicked");
+
+            var obj = {};
+            obj.uid = $("input[name='uid']").val();
+            obj.upw = $("input[name='upw']").val();
+            obj.email = $("input[name='email']").val();
+
+            $.post("http://10.10.10.93:8080/jsonEx/join",obj,function(text){
+                alert(text);
+            });
+        });
+
+       $("#checkBtn").on("click",(e)=>{
+           e.preventDefault();  //넘어가는거 막기
+           e.stopPropagation(); //위에거랑 아래꺼 중요
+           var input = $("input[name='uid']");
+           var userInput = input.val();
+           $(".spinner").show('fast');
+           $.ajax({
+               url : "http://10.10.10.93:8080/jsonEx/idCheck",
+               data :  {str: userInput, pw:"1234"},
+               success :function (result) {
+                       if(result === userInput){
+                           $(".msg").html("해당 아이디는 사용 가능합니다.");
+                       }else{
+                           alert("사용불가")
+                       }
+                   $(".spinner").hide('fast');
+                   console.log(result);
+               }    //success 콜백
+           }) // result.txt?str=입력값&pw=1234
+       })
+    });
+</script>
+</body>
+</html>

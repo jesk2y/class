@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<style>
+    .small {
+        background-color: deepskyblue;
+        margin: 6px;
+        padding: 6px;
+        border-radius: 3px;
+    }
+
+    .box {
+        width:400px;
+    }
+
+    #listUL li{
+        width:100%;
+        height: 30px;
+        border: 1px solid deepskyblue;
+        list-style: none;
+    }
+    #listUL li span {
+        position: relative;
+        align-items: end;
+        text-align: end;
+    }
+
+</style>
+
+<div>
+    <div>
+        <button id="resetBtn">Reset</button>
+    </div>
+    <div>
+        <input type="text" id="input" value="AAAAA"><button id="btn">ADD</button>
+    </div>
+    <div class="box">
+        <ul id="listUL">
+
+        </ul>
+    </div>
+
+</div>
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script>
+$(document).ready(function() {
+
+    var inputTag = $("#input");
+    var listUL = $("#listUL");
+    var btn = $("#btn");
+    var resetBtn = $("#resetBtn");
+
+    var todoList = [];
+    var currentIdx = -1;
+
+    function showList() {
+        listUL.html("");
+        $(todoList).each(function(idx, obj){
+            listUL.append("<li>" + obj +"<span class='small'>x</span></li>");
+        });
+    }
+
+    btn.on("click", function (e) {
+
+        var label = btn.html();
+
+        if(label === 'ADD'){
+            todoList.push(inputTag.val());
+            showList();
+
+        }else if(label === 'MODIFY'){
+            todoList[currentIdx] = inputTag.val();
+            listUL.children().eq(currentIdx).first().html(inputTag.val() + "<span class='small'>x</span>");
+            btn.html("ADD");
+        }
+
+        inputTag.val("");
+    });
+
+    listUL.on("click","li" , function(e){
+
+        var idx = $(this).index();
+        console.log(idx);
+        currentIdx = idx;
+        inputTag.val(todoList[idx]);
+        btn.html("MODIFY");
+    });
+
+    listUL.on("click",".small" , function(e){
+
+        e.stopPropagation();
+        console.log("remove");
+
+        var liObj = $(this).closest("li");
+        var idx = liObj.index();
+        todoList.splice(idx,1);
+        liObj.remove();
+
+    });
+
+    resetBtn.on("click", function() {
+
+        todoList = [];
+        showList();
+        currentIdx = -1;
+        btn.html("ADD");
+
+    });
+
+
+});
+</script>
+
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+

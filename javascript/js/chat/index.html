@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body onkeyup="enterKey()">
+<h1>Websocket Chatting</h1>
+
+<div>
+    <input type="text" id="inputText">
+</div>
+<style>
+    #msgList{
+        height: 400px;
+        width:100%;
+        max-width:300px;
+        overflow: auto;
+        border: 3px solid #000;
+        background-color: #cdc7f0;
+        font-weight: bold;
+        padding:10px;
+    }
+</style>
+<div>
+    <ul id="msgList">
+    </ul>
+</div>
+
+<script>
+    var nickName = window.prompt("닉네임을 입력하세요");
+    connectServer();
+
+    var ws ;
+
+    var inputObj = document.querySelector("#inputText");
+
+    function enterKey(){
+        if(window.event.keyCode == 13){
+
+            var msg = nickName = ": " + inputObj.value;
+
+            console.log("enter............." + inputObj.value);
+            inputObj.value = "";
+            ws.send(msg);
+        }
+    }
+
+    console.log(ws);
+
+    function sendName(){
+        ws.send("HELLO");
+    }
+
+    var msgList = document.querySelector("#msgList");
+
+    function connectServer(){
+        if(!ws){
+            ws = new WebSocket("ws://10.10.10.94:8080/chat");
+            console.log(ws);
+            ws.onmessage = function(event){
+                console.log("FROM SERVER: " + event.data);
+                msgList.innerHTML += "<li>" + event.data+"</li>";
+            };
+        }
+    }
+
+    function disConnectServer() {
+        if(ws){
+            console.log("disconnect");
+            ws.close();
+        }
+    }
+</script>
+</body>
+</html>
